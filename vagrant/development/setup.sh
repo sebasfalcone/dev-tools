@@ -59,7 +59,14 @@ setup_packages() {
 
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EB3E94ADBE1229CF
     add-apt-repository -y "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
+    apt-get-update
     apt-get-install code  
+
+    # MongoDB
+    wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | gpg --dearmor | tee /usr/share/keyrings/mongodb.gpg > /dev/null
+    echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+    apt-get-update
+    apt-get-install mongodb-org
 
     # DOCKER
     echo "Installing docker"
@@ -77,11 +84,6 @@ setup_packages() {
 
     sudo usermod -aG docker vagrant
     newgrp docker
-}
-
-setup_wazuh_repo() {
-    curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | apt-key-add
-    echo "deb https://packages.wazuh.com/4.x/apt/ stable main" > /etc/apt/sources.list.d/wazuh.list
 }
 
 if [ -z "$sourced" ]

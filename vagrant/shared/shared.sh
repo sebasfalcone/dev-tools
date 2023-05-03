@@ -44,10 +44,10 @@ setup_git() {
     chmod 600 $SSH_DIR/id_rsa
 
     SSH_DIR="/home/vagrant/.ssh"
+    
     cp $SHARED_DIR/private/gpg_key.asc $SSH_DIR/gpg_key.asc
-    echo "To import the gpg keys, execute the following command: "
-    echo "gpg --batch --import $SSH_DIR/gpg_key.asc"
-
+    gpg --batch --import $SSH_DIR/gpg_key.asc
+    
     # Set permissions
     chown vagrant:vagrant $SSH_DIR/id_rsa*
     chmod 644 $SSH_DIR/id_rsa.pub
