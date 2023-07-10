@@ -40,6 +40,7 @@ setup_packages() {
     apt-get-install gnupg2
     apt-get-install ca-certificates
     apt-get-install lsb-release
+    apt-get-install software-properties-common
 
     apt-get-install build-essential
     apt-get-install libssl-dev
@@ -63,6 +64,8 @@ setup_packages() {
     apt-get-install code  
 
     # MongoDB
+    echo "Installing mongoDB"
+
     wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | gpg --dearmor | tee /usr/share/keyrings/mongodb.gpg > /dev/null
     echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list
     apt-get-update
@@ -71,16 +74,15 @@ setup_packages() {
     # DOCKER
     echo "Installing docker"
 
-    apt-get-upgrade
-    sudo mkdir -p /etc/apt/keyrings
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-
-    echo \
-    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-    $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    apt-get-update
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
     apt-get-update
-    apt-get-install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    apt-cache policy docker-ce
+    apt-get-install docker-ce
+
+    sudo systemctl status docker
 
     sudo usermod -aG docker vagrant
     newgrp docker
