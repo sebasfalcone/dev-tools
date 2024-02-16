@@ -8,11 +8,11 @@ set -e
 source shared/shared.sh
 
 # Detect CentOS version
-RELEASE_VERSION=$(grep -oE '[0-9]+' /etc/centos-release | head -n1)
+RELEASE_VERSION=$(grep -oP '(?<=release )\d+' /etc/centos-release)
 
-if [ -z "$OS_MAJOR" ]
+if [ -z "$RELEASE_VERSION" ]
 then
-    >&2 echo "ERROR: cannot parse /etc/centos-release (OS_MAJOR)"
+    >&2 echo "ERROR: cannot parse /etc/centos-release ${OS_MAJOR}"
     exit 1
 fi
 
