@@ -43,6 +43,5 @@ $hosts = {
     "development"           => "192.168.56.80"
 }
 
-$developmentMemory = 12288
-$agentMemory = 1024
+$dedicatedMemory = 4096
 $cpus = 6

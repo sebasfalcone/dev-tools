@@ -29,7 +29,7 @@ Vagrant.configure("2") do |config|
     config.winrm.password = "vagrant"
     
     config.vm.provider "virtualbox" do |v|
-        v.memory = $agentMemory
+        v.memory = $dedicatedMemory
         v.cpus = $cpus
         v.gui = true
     end
